@@ -10,9 +10,9 @@
     <meta name="description" content="" />
     <meta name="keyword" content="" />
     <meta name="author" content="flexilecode" />
-    <title>Duralux || Dashboard</title>
+    <title>Maktabah Jafariyah Online Exam</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/MJ logo.jpg" />
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
 
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/vendors.min.css" />
@@ -27,8 +27,8 @@
             <div class="m-header">
                 <a href="#" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
-                    <img src="assets/images/logo-full.png" alt="" class="logo logo-lg" />
-                    <img src="assets/images/logo-abbr.png" alt="" class="logo logo-sm" />
+                    <img src="assets/images/Full logo.png" alt="" class="logo logo-lg" height="50px" width="200px" />
+                    <img src="assets/images/MJ logo.jpg" alt="" class="logo logo-sm" height="40px" width="50px" />
                 </a>
             </div>
             <div class="navbar-content">
@@ -95,7 +95,7 @@
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
+                        <a href="{{ url('login') }}" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-log-out"></i></span>
                             <span class="nxl-mtext">Logout</span>
                         </a>
@@ -246,9 +246,6 @@
             <div class="header-right ms-auto">
                 <div class="d-flex align-items-center">
                     <div class="dropdown nxl-h-item nxl-header-search">
-                        <a href="#" class="nxl-head-link me-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                            <i class="feather-search"></i>
-                        </a>
                         <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-search-dropdown">
                             <div class="input-group search-form">
                                 <span class="input-group-text">
@@ -262,14 +259,14 @@
                             <div class="dropdown-divider mt-0"></div>
                         </div>
                     </div>
-                    <div class="nxl-h-item dark-light-theme">
+                    <!-- <div class="nxl-h-item dark-light-theme">
                         <a href="#" class="nxl-head-link me-0 dark-button">
                             <i class="feather-moon"></i>
                         </a>
                         <a href="#" class="nxl-head-link me-0 light-button" style="display: none">
                             <i class="feather-sun"></i>
                         </a>
-                    </div>
+                    </div> -->
                     <div class="dropdown nxl-h-item">
                         <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
                             <img src="assets/images/avatar/1.png" alt="user-image" class="img-fluid user-avtar me-0" />
