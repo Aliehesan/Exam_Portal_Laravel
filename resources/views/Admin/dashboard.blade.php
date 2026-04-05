@@ -5,434 +5,225 @@
     <div class="page-header">
         <div class="page-header-left d-flex align-items-center">
             <div class="page-header-title">
-                <h5 class="m-b-10">Dashboard</h5>
+                <h5 class="m-b-10">Admin Dashboard</h5>
             </div>
         </div>
     </div>
     <!-- [ page-header ] end -->
+
     <!-- [ Main Content ] start -->
     <div class="main-content">
         <div class="row">
-            <!-- [Invoices Awaiting Payment] start -->
-            <div class="col-xxl-3 col-md-6">
-                <div class="card stretch stretch-full">
+            <!-- [Total Topics] start -->
+            <div class="col-xxl-3 col-md-6 mb-4">
+                <div class="card stretch stretch-full h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
                             <div class="d-flex gap-4 align-items-center">
-                                <div class="avatar-text avatar-lg bg-gray-200">
-                                    <i class="feather-dollar-sign"></i>
+                                <div class="avatar-text avatar-lg bg-soft-primary text-primary">
+                                    <i class="feather-layers"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">45</span>/<span
-                                            class="counter">76</span></div>
-                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Invoices Awaiting Payment
-                                    </h3>
+                                    <div class="fs-4 fw-bold text-dark">{{ $totalTopics }}</div>
+                                    <h3 class="fs-13 fw-semibold text-truncate-1-line text-muted">Total Topics</h3>
                                 </div>
                             </div>
-                            <a href="#" class="">
-                                <i class="feather-more-vertical"></i>
-                            </a>
                         </div>
-                        <div class="pt-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted text-truncate-1-line">Invoices
-                                    Awaiting
-                                </a>
-                                <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">$5,569</span>
-                                    <span class="fs-11 text-muted">(56%)</span>
-                                </div>
-                            </div>
-                            <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 56%">
-                                </div>
-                            </div>
+                        <div class="pt-2">
+                            <a href="{{ url('manage-topics') }}" class="btn btn-sm btn-light-brand w-100">Manage Topics</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [Invoices Awaiting Payment] end -->
-            <!-- [Converted Leads] start -->
-            <div class="col-xxl-3 col-md-6">
-                <div class="card stretch stretch-full">
+            <!-- [Total Topics] end -->
+
+            <!-- [Total Questions] start -->
+            <div class="col-xxl-3 col-md-6 mb-4">
+                <div class="card stretch stretch-full h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
                             <div class="d-flex gap-4 align-items-center">
-                                <div class="avatar-text avatar-lg bg-gray-200">
-                                    <i class="feather-cast"></i>
+                                <div class="avatar-text avatar-lg bg-soft-info text-info">
+                                    <i class="feather-help-circle"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">48</span>/<span
-                                            class="counter">86</span></div>
-                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Converted Leads</h3>
+                                    <div class="fs-4 fw-bold text-dark">{{ $totalQuestions }}</div>
+                                    <h3 class="fs-13 fw-semibold text-truncate-1-line text-muted">Total AI Questions</h3>
                                 </div>
                             </div>
-                            <a href="#" class="">
-                                <i class="feather-more-vertical"></i>
-                            </a>
                         </div>
-                        <div class="pt-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted text-truncate-1-line">Converted
-                                    Leads </a>
-                                <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">52 Completed</span>
-                                    <span class="fs-11 text-muted">(63%)</span>
-                                </div>
-                            </div>
-                            <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 63%">
-                                </div>
-                            </div>
+                        <div class="pt-2">
+                            <a href="{{ url('manage-questions') }}" class="btn btn-sm btn-light-brand w-100">Manage Questions</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [Converted Leads] end -->
-            <!-- [Projects In Progress] start -->
-            <div class="col-xxl-3 col-md-6">
-                <div class="card stretch stretch-full">
+            <!-- [Total Questions] end -->
+
+            <!-- [Questions Selected] start -->
+            <div class="col-xxl-3 col-md-6 mb-4">
+                <div class="card stretch stretch-full h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
                             <div class="d-flex gap-4 align-items-center">
-                                <div class="avatar-text avatar-lg bg-gray-200">
-                                    <i class="feather-briefcase"></i>
+                                <div class="avatar-text avatar-lg bg-soft-success text-success">
+                                    <i class="feather-check-square"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">16</span>/<span
-                                            class="counter">20</span></div>
-                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Projects In Progress</h3>
+                                    <div class="fs-4 fw-bold text-dark">{{ $selectedQuestions }}</div>
+                                    <h3 class="fs-13 fw-semibold text-truncate-1-line text-muted">Ready for Exam</h3>
                                 </div>
                             </div>
-                            <a href="#" class="">
-                                <i class="feather-more-vertical"></i>
-                            </a>
                         </div>
-                        <div class="pt-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted text-truncate-1-line">Projects In
-                                    Progress
-                                </a>
-                                <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">16 Completed</span>
-                                    <span class="fs-11 text-muted">(78%)</span>
-                                </div>
-                            </div>
-                            <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 78%">
-                                </div>
+                        <div class="pt-2 d-flex align-items-center justify-content-between">
+                            <span class="fs-12 text-muted">Selected Questions</span>
+                            <div class="progress w-50 ht-3">
+                                @php
+                                    $progress = $totalQuestions > 0 ? ($selectedQuestions / $totalQuestions) * 100 : 0;
+                                @endphp
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $progress }}%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [Projects In Progress] end -->
-            <!-- [Conversion Rate] start -->
-            <div class="col-xxl-3 col-md-6">
-                <div class="card stretch stretch-full">
+            <!-- [Questions Selected] end -->
+
+            <!-- [Total Students] start -->
+            <div class="col-xxl-3 col-md-6 mb-4">
+                <div class="card stretch stretch-full h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
                             <div class="d-flex gap-4 align-items-center">
-                                <div class="avatar-text avatar-lg bg-gray-200">
-                                    <i class="feather-activity"></i>
+                                <div class="avatar-text avatar-lg bg-soft-warning text-warning">
+                                    <i class="feather-users"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">46.59</span>%
-                                    </div>
-                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Conversion Rate</h3>
+                                    <div class="fs-4 fw-bold text-dark" id="dashTotalStudents">0</div>
+                                    <h3 class="fs-13 fw-semibold text-truncate-1-line text-muted">Total Students</h3>
                                 </div>
                             </div>
-                            <a href="#" class="">
-                                <i class="feather-more-vertical"></i>
-                            </a>
                         </div>
-                        <div class="pt-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted text-truncate-1-line"> Conversion
-                                    Rate
-                                </a>
-                                <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">$2,254</span>
-                                    <span class="fs-11 text-muted">(46%)</span>
-                                </div>
-                            </div>
-                            <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 46%"></div>
-                            </div>
+                        <div class="pt-2">
+                            <a href="{{ url('manage-students') }}" class="btn btn-sm btn-light-brand w-100">Manage Students</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [Conversion Rate] end -->
-            <!-- [Mini] start -->
-            <div class="col-lg-4">
-                <div class="card mb-4 stretch stretch-full">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <div class="d-flex gap-3 align-items-center">
-                            <div class="avatar-text">
-                                <i class="feather feather-star"></i>
-                            </div>
-                            <div>
-                                <div class="fw-semibold text-dark">Tasks Completed</div>
-                                <div class="fs-12 text-muted">22/35 completed</div>
-                            </div>
-                        </div>
-                        <div class="fs-4 fw-bold text-dark">22/35</div>
-                    </div>
-                    <div class="card-body d-flex align-items-center justify-content-between gap-4">
-                        <div id="task-completed-area-chart"></div>
-                        <div class="fs-12 text-muted text-nowrap">
-                            <span class="fw-semibold text-primary">28% more</span><br />
-                            <span>from last week</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card mb-4 stretch stretch-full">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <div class="d-flex gap-3 align-items-center">
-                            <div class="avatar-text">
-                                <i class="feather feather-file-text"></i>
-                            </div>
-                            <div>
-                                <div class="fw-semibold text-dark">New Tasks</div>
-                                <div class="fs-12 text-muted">0/20 tasks</div>
-                            </div>
-                        </div>
-                        <div class="fs-4 fw-bold text-dark">5/20</div>
-                    </div>
-                    <div class="card-body d-flex align-items-center justify-content-between gap-4">
-                        <div id="new-tasks-area-chart"></div>
-                        <div class="fs-12 text-muted text-nowrap">
-                            <span class="fw-semibold text-success">34% more</span><br />
-                            <span>from last week</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card mb-4 stretch stretch-full">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <div class="d-flex gap-3 align-items-center">
-                            <div class="avatar-text">
-                                <i class="feather feather-airplay"></i>
-                            </div>
-                            <div>
-                                <div class="fw-semibold text-dark">Project Done</div>
-                                <div class="fs-12 text-muted">20/30 project</div>
-                            </div>
-                        </div>
-                        <div class="fs-4 fw-bold text-dark">20/30</div>
-                    </div>
-                    <div class="card-body d-flex align-items-center justify-content-between gap-4">
-                        <div id="project-done-area-chart"></div>
-                        <div class="fs-12 text-muted text-nowrap">
-                            <span class="fw-semibold text-danger">42% more</span><br />
-                            <span>from last week</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- [Mini] end !-->
-            <!-- [Latest Leads] start -->
-            <div class="col-xxl-8">
+            <!-- [Total Students] end -->
+        </div>
+
+        <div class="row">
+            <!-- [Recently Added Students] start -->
+            <div class="col-lg-8">
                 <div class="card stretch stretch-full">
-                    <div class="card-header">
-                        <h5 class="card-title">Latest Leads</h5>
-                        <div class="card-header-action">
-                            <div class="card-header-btn">
-                                <div data-bs-toggle="tooltip" title="Delete">
-                                    <a href="#" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove">
-                                    </a>
-                                </div>
-                                <div data-bs-toggle="tooltip" title="Refresh">
-                                    <a href="#" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh">
-                                    </a>
-                                </div>
-                                <div data-bs-toggle="tooltip" title="Maximize/Minimize">
-                                    <a href="#" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <a href="#" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
-                                    <div data-bs-toggle="tooltip" title="Options">
-                                        <i class="feather-more-vertical"></i>
-                                    </div>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a href="#" class="dropdown-item"><i class="feather-at-sign"></i>New</a>
-                                    <a href="#" class="dropdown-item"><i class="feather-calendar"></i>Event</a>
-                                    <a href="#" class="dropdown-item"><i class="feather-bell"></i>Snoozed</a>
-                                    <a href="#" class="dropdown-item"><i class="feather-trash-2"></i>Deleted</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item"><i class="feather-settings"></i>Settings</a>
-                                    <a href="#" class="dropdown-item"><i class="feather-life-buoy"></i>Tips &
-                                        Tricks</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">Recently Added Students</h5>
+                        <a href="{{ url('manage-students') }}" class="text-primary fs-12 fw-medium">View All</a>
                     </div>
                     <div class="card-body custom-card-action p-0">
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr class="border-b">
-                                        <th scope="row">Users</th>
-                                        <th>Proposal</th>
-                                        <th>Date</th>
+                                        <th>Student</th>
+                                        <th>Email</th>
                                         <th>Status</th>
-                                        <th class="text-end">Actions</th>
+                                        <th>Joined</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-3">
-                                                <div class="avatar-image">
-                                                    <img src="assets/images/avatar/2.png" alt="" class="img-fluid" />
-                                                </div>
-                                                <a href="#">
-                                                    <span class="d-block">Archie Cantones</span>
-                                                    <span
-                                                        class="fs-12 d-block fw-normal text-muted">arcie.tones@gmail.com</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-gray-200 text-dark">Sent</span>
-                                        </td>
-                                        <td>11/06/2023 10:53</td>
-                                        <td>
-                                            <span class="badge bg-soft-success text-success">Completed</span>
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="#"><i class="feather-more-vertical"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-3">
-                                                <div class="avatar-image">
-                                                    <img src="assets/images/avatar/3.png" alt="" class="img-fluid" />
-                                                </div>
-                                                <a href="#">
-                                                    <span class="d-block">Holmes Cherryman</span>
-                                                    <span
-                                                        class="fs-12 d-block fw-normal text-muted">golms.chan@gmail.com</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-gray-200 text-dark">New</span>
-                                        </td>
-                                        <td>11/06/2023 10:53</td>
-                                        <td>
-                                            <span class="badge bg-soft-primary text-primary">In Progress </span>
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="#"><i class="feather-more-vertical"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-3">
-                                                <div class="avatar-image">
-                                                    <img src="assets/images/avatar/4.png" alt="" class="img-fluid" />
-                                                </div>
-                                                <a href="#">
-                                                    <span class="d-block">Malanie Hanvey</span>
-                                                    <span
-                                                        class="fs-12 d-block fw-normal text-muted">lanie.nveyn@gmail.com</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-gray-200 text-dark">Sent</span>
-                                        </td>
-                                        <td>11/06/2023 10:53</td>
-                                        <td>
-                                            <span class="badge bg-soft-success text-success">Completed</span>
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="#"><i class="feather-more-vertical"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-3">
-                                                <div class="avatar-image">
-                                                    <img src="assets/images/avatar/5.png" alt="" class="img-fluid" />
-                                                </div>
-                                                <a href="#">
-                                                    <span class="d-block">Kenneth Hune</span>
-                                                    <span
-                                                        class="fs-12 d-block fw-normal text-muted">nneth.une@gmail.com</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-gray-200 text-dark">Returning</span>
-                                        </td>
-                                        <td>11/06/2023 10:53</td>
-                                        <td>
-                                            <span class="badge bg-soft-warning text-warning">Not
-                                                Interested</span>
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="#"><i class="feather-more-vertical"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-3">
-                                                <div class="avatar-image">
-                                                    <img src="assets/images/avatar/6.png" alt="" class="img-fluid" />
-                                                </div>
-                                                <a href="#">
-                                                    <span class="d-block">Valentine Maton</span>
-                                                    <span
-                                                        class="fs-12 d-block fw-normal text-muted">alenine.aton@gmail.com</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-gray-200 text-dark">Sent</span>
-                                        </td>
-                                        <td>11/06/2023 10:53</td>
-                                        <td>
-                                            <span class="badge bg-soft-success text-success">Completed</span>
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="#"><i class="feather-more-vertical"></i></a>
-                                        </td>
-                                    </tr>
+                                <tbody id="recentStudentsTable">
+                                    <!-- Populated via JS -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
-                            <li>
-                                <a href="#"><i class="bi bi-arrow-left"></i></a>
-                            </li>
-                            <li><a href="#" class="active">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li>
-                                <a href="#"><i class="bi bi-dot"></i></a>
-                            </li>
-                            <li><a href="#">8</a></li>
-                            <li><a href="#">9</a></li>
-                            <li>
-                                <a href="#"><i class="bi bi-arrow-right"></i></a>
-                            </li>
-                        </ul>
+                </div>
+            </div>
+            <!-- [Recently Added Students] end -->
+
+            <!-- [Quick Links] start -->
+            <div class="col-lg-4">
+                <div class="card stretch stretch-full">
+                    <div class="card-header">
+                        <h5 class="card-title">Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column gap-3">
+                            <a href="{{ url('manage-topics') }}" class="d-flex align-items-center p-3 rounded border border-dashed border-gray-300 hover-bg-gray-100 transition-all">
+                                <div class="avatar-text bg-soft-primary text-primary me-3">
+                                    <i class="feather-plus"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 fw-semibold text-dark">Add New Topic</h6>
+                                    <span class="fs-12 text-muted">Create a new exam subject</span>
+                                </div>
+                            </a>
+                            <a href="{{ url('manage-topics') }}" class="d-flex align-items-center p-3 rounded border border-dashed border-gray-300 hover-bg-gray-100 transition-all">
+                                <div class="avatar-text bg-soft-info text-info me-3">
+                                    <i class="feather-cpu"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 fw-semibold text-dark">Generate Questions</h6>
+                                    <span class="fs-12 text-muted">Use AI to build question banks</span>
+                                </div>
+                            </a>
+                            <a href="{{ url('manage-students') }}" class="d-flex align-items-center p-3 rounded border border-dashed border-gray-300 hover-bg-gray-100 transition-all">
+                                <div class="avatar-text bg-soft-warning text-warning me-3">
+                                    <i class="feather-user-plus"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 fw-semibold text-dark">Register Student</h6>
+                                    <span class="fs-12 text-muted">Enroll a new student to the portal</span>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- [Latest Leads] end -->
+            <!-- [Quick Links] end -->
         </div>
     </div>
     <!-- [ Main Content ] end -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // We're leaving students on LocalStorage as requested 
+                const students = JSON.parse(localStorage.getItem('exam_students') || '[]');
+                document.getElementById('dashTotalStudents').textContent = students.length;
+
+                // Populate Recent Students Table
+                const recentStudents = [...students].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+                const tbody = document.getElementById('recentStudentsTable');
+
+                if (recentStudents.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No students registered yet.</td></tr>';
+                } else {
+                    tbody.innerHTML = recentStudents.map(s => {
+                        const statusClass = s.status === 'active' ? 'bg-soft-success text-success' : 'bg-soft-danger text-danger';
+                        const initials = s.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                        const dateObj = new Date(s.createdAt);
+                        const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        
+                        return `<tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar-text avatar-sm bg-soft-primary text-primary rounded-circle fw-bold">
+                                        ${initials}
+                                    </div>
+                                    <span class="fw-semibold">${s.name}</span>
+                                </div>
+                            </td>
+                            <td><span class="text-muted">${s.email}</span></td>
+                            <td><span class="badge ${statusClass}">${s.status === 'active' ? 'Active' : 'Inactive'}</span></td>
+                            <td><span class="text-muted fs-12">${dateStr}</span></td>
+                        </tr>`;
+                    }).join('');
+                }
+            } catch (err) {
+                console.error("Dashboard error:", err);
+            }
+        });
+    </script>
 @endsection

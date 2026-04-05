@@ -37,7 +37,7 @@
                         <label>Navigation</label>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
+                        <a href="{{ url('dashboard') }}" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-airplay"></i></span>
                             <span class="nxl-mtext">Dashboards</span>
                         </a>
@@ -49,13 +49,13 @@
                         </a>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
+                        <a href="{{ url('manage-questions') }}" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-help-circle"></i></span>
                             <span class="nxl-mtext">Manage Questions</span>
                         </a>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
+                        <a href="{{ url('manage-students') }}" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-users"></i></span>
                             <span class="nxl-mtext">Manage Students</span>
                         </a>
