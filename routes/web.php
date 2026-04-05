@@ -26,3 +26,18 @@ Route::get('/reset-password', function () {
     return view('Auth.reset-password');
 });
 
+Route::get('/user-dashboard', function () {
+    return view('User.dashboard');
+});
+
+Route::get('/viewexam', function () {
+    return view('User.Viewexam');
+});
+
+Route::get('/viewresult', function () {
+    return view('User.Viewresult');
+});
+
+Route::get('/exampage', function () {
+    return view('User.Exampage');
+});
