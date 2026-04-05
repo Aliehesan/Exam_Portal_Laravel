@@ -41,3 +41,8 @@ Route::get('/viewresult', function () {
 Route::get('/exampage', function () {
     return view('User.Exampage');
 });
+
+Route::get('/manage-topics', function () {
+    return view('Admin.manage-topics');
+});
+

@@ -43,7 +43,7 @@
                         </a>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
+                        <a href="{{ url('manage-topics') }}" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-layers"></i></span>
                             <span class="nxl-mtext">Manage Topics</span>
                         </a>
@@ -318,9 +318,8 @@
                     document.write(new Date().getFullYear());
                 </script>
             </p>
-            <p><span>By: <a target="_blank" href="https://wrapbootstrap.com/user/theme_ocean"
-                        target="_blank">theme_ocean</a></span> • <span>Distributed by: <a target="_blank"
-                        href="https://themewagon.com/" target="_blank">ThemeWagon</a></span></p>
+            <!-- <p><span>By: <a target="_blank" href="" target="_blank"></a></span> • <span>Distributed by: <a
+                        target="_blank" href="" target="_blank"></a></span></p> -->
             <div class="d-flex align-items-center gap-4">
                 <a href="#" class="fs-11 fw-semibold text-uppercase">Help</a>
                 <a href="#" class="fs-11 fw-semibold text-uppercase">Terms</a>
