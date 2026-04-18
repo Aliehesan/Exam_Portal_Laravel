@@ -16,4 +16,9 @@ class Question extends Model
     {
         return $this->belongsTo(Topic::class);
     }
+
+    public function exams()
+    {
+        return $this->belongsToMany(Exam::class);
+    }
 }

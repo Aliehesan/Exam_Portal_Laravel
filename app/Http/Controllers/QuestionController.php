@@ -12,28 +12,39 @@ class QuestionController extends Controller
 {
     public function index(Request $request)
     {
-        $topics = \App\Models\Topic::all();
-        
-        $query = Question::with('topic');
-        
+        $topics = Topic::all();
+        $exams = \App\Models\Exam::all();
+        $exam_id = $request->exam_id;
+
+        $query = Question::with(['topic', 'exams']);
+
         if ($request->filled('topic') && $request->topic !== 'all') {
             $query->where('topic_id', $request->topic);
         }
-        
+
         if ($request->filled('difficulty') && $request->difficulty !== 'all') {
             $query->where('difficulty', $request->difficulty);
         }
-        
-        if ($request->filled('status') && $request->status !== 'all') {
+
+        // Status filter (only when NOT in exam-assignment mode)
+        if (!$exam_id && $request->filled('status') && $request->status !== 'all') {
             if ($request->status === 'selected') {
                 $query->where('is_selected', true);
             } elseif ($request->status === 'unselected') {
                 $query->where('is_selected', false);
             }
         }
-        
+
         $questions = $query->get();
-        return view('Admin.manage-questions', compact('questions', 'topics'));
+
+        // If filtering by specific exam mapping, override is_selected with pivot data
+        if ($exam_id) {
+            foreach($questions as $q) {
+                $q->is_selected = $q->exams->contains($exam_id);
+            }
+        } 
+        
+        return view('Admin.manage-questions', compact('questions', 'topics', 'exams', 'exam_id'));
     }
 
     public function all()
@@ -48,8 +59,19 @@ class QuestionController extends Controller
     public function toggleSelect(Request $request, $id)
     {
         $question = Question::findOrFail($id);
-        $question->is_selected = $request->is_selected;
-        $question->save();
+        
+        if ($request->filled('exam_id')) {
+            if ($request->is_selected) {
+                $question->exams()->syncWithoutDetaching([$request->exam_id]);
+            } else {
+                $question->exams()->detach($request->exam_id);
+            }
+        } else {
+            // Fallback for legacy behavior if needed
+            $question->is_selected = $request->is_selected;
+            $question->save();
+        }
+        
         return response()->json(['success' => true]);
     }
 
@@ -64,7 +86,21 @@ class QuestionController extends Controller
     {
         $ids = $request->ids;
         $status = $request->status;
-        Question::whereIn('id', $ids)->update(['is_selected' => $status]);
+        $exam_id = $request->exam_id;
+        
+        if (!empty($ids)) {
+            if ($exam_id) {
+                // Bulk attach or detach from pivot
+                $exam = \App\Models\Exam::findOrFail($exam_id);
+                if ($status) {
+                    $exam->questions()->syncWithoutDetaching($ids);
+                } else {
+                    $exam->questions()->detach($ids);
+                }
+            } else {
+                Question::whereIn('id', $ids)->update(['is_selected' => $status]);
+            }
+        }
         return response()->json(['success' => true]);
     }
 
@@ -84,7 +120,9 @@ class QuestionController extends Controller
         ]);
 
         $topic = Topic::find($request->topic_id);
-        $prompt = "Generate exactly {$request->count} multiple choice questions (MCQ) on the topic \"{$topic->name}\" with difficulty level \"{$request->difficulty}\". 
+        $prompt = "Generate exactly {$request->count} multiple choice questions (MCQ) on the topic \"{$topic->name}\" with difficulty level \"{$request->difficulty}\".
+        
+IMPORTANT BOUNDARY/SYLLABUS: The questions must be strictly within the scope of the following syllabus/description: \"{$topic->description}\". Do not generate questions outside of this scope.
 
 Each question must have:
 - A clear question text
@@ -108,14 +146,29 @@ Return ONLY a valid JSON array, no extra text. Format:
         $apiKey = env('GEMINI_API_KEY');
         $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
 
-        $response = Http::post($url, [
-            'contents' => [
-                ['parts' => [['text' => $prompt]]]
-            ]
-        ]);
+        // Retry up to 3 times if the API is temporarily unavailable
+        $response = null;
+        $maxRetries = 3;
+        for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+            $response = Http::timeout(60)->post($url, [
+                'contents' => [
+                    ['parts' => [['text' => $prompt]]]
+                ]
+            ]);
+
+            if ($response->successful()) {
+                break;
+            }
+
+            // If 503 (overloaded) and not the last attempt, wait and retry
+            if ($response->status() === 503 && $attempt < $maxRetries) {
+                sleep(3);
+                continue;
+            }
+        }
 
         if (!$response->successful()) {
-            return response()->json(['error' => 'Failed to reach AI service'], 500);
+            return response()->json(['error' => 'AI service is temporarily unavailable. Please try again in a minute. (HTTP ' . $response->status() . ')'], 500);
         }
 
         $data = $response->json();

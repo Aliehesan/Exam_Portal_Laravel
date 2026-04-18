@@ -52,13 +52,13 @@
         <div class="auth-cover-sidebar-inner">
             <div class="auth-cover-card-wrapper">
                 <div class="auth-cover-card p-sm-5">
-                    <div class="mb-5">
-                        <img src="assets/images/MJ logo.jpg" alt="Logo"
-                            style="width: 60px; height: 60px; object-fit: contain;">
+                    <div class="mb-0">
+                        <img src="assets/images/Full Logo.png" alt="Logo"
+                            style="width:200px; height: 200px; object-fit: contain;">
                     </div>
                     <h2 class="fs-20 fw-bolder mb-4">Login</h2>
                     <h4 class="fs-13 fw-bold mb-2">Login to your account</h4>
-                    <form action="{{ url('dashboard') }}" class="w-100 mt-4 pt-2">
+                    <form action="{{ url('dashboard') }}" class="w-100 mt-2 pt-2">
 
                         <div class="mb-4">
                             <input type="email" name="email" class="form-control" placeholder="Email or Username"

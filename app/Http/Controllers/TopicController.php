@@ -17,6 +17,7 @@ class TopicController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'status' => 'required|string'
         ]);
 
@@ -28,6 +29,7 @@ class TopicController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'status' => 'required|string'
         ]);
 

@@ -25,11 +25,13 @@
                             @csrf
                             <div class="mb-4">
                                 <label class="form-label">Topic Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" placeholder="e.g. Java, Python, Data Structures" required>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="e.g. Java, Python, Data Structures" required>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label">Description</label>
-                                <textarea name="description" class="form-control" rows="3" placeholder="Brief description of the topic"></textarea>
+                                <label class="form-label">Description<span class="text-danger">*</span></label>
+                                <textarea name="description" class="form-control" rows="3"
+                                    placeholder="e.g. Syllabus boundaries, Unit 1 to 2, specific scope" required></textarea>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Status</label>
@@ -52,7 +54,7 @@
             <!-- [Topics List] start -->
             <div class="col-lg-8">
                 <div class="card stretch stretch-full">
-                        <div class="card-header d-flex align-items-center justify-content-between">
+                    <div class="card-header d-flex align-items-center justify-content-between">
                         <h5 class="card-title">All Topics</h5>
                         <span class="badge bg-soft-primary text-primary">Total: {{ $topics->count() }}</span>
                     </div>
@@ -88,26 +90,39 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-3">
-                                                    <div class="avatar-text avatar-sm {{ $color['bg'] }} {{ $color['text'] }} rounded">
+                                                    <div
+                                                        class="avatar-text avatar-sm {{ $color['bg'] }} {{ $color['text'] }} rounded">
                                                         <i class="feather-book-open"></i>
                                                     </div>
                                                     <span class="fw-semibold">{{ $topic->name }}</span>
                                                 </div>
                                             </td>
-                                            <td><span class="text-muted fs-12">{{ $topic->description ?: '—' }}</span></td>
-                                            <td><span class="badge bg-soft-primary text-primary">{{ $topic->questions_count }}</span></td>
+                                            <td>
+                                                <div class="text-muted fs-12" style="white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">{{ $topic->description ?: '—' }}</div>
+                                            </td>
+                                            <td><span
+                                                    class="badge bg-soft-primary text-primary">{{ $topic->questions_count }}</span>
+                                            </td>
                                             <td><span class="badge {{ $statusClass }}">{{ ucfirst($topic->status) }}</span></td>
                                             <td class="text-end">
-                                                <button class="btn btn-sm btn-primary me-1" onclick="openGenerateModal('{{ $topic->id }}','{{ addslashes($topic->name) }}')" data-bs-toggle="tooltip" title="Generate Questions">
+                                                <button class="btn btn-sm btn-primary me-1"
+                                                    onclick="openGenerateModal('{{ $topic->id }}','{{ addslashes($topic->name) }}')"
+                                                    data-bs-toggle="tooltip" title="Generate Questions">
                                                     <i class="feather-cpu"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-light-brand me-1" onclick="openEditModal('{{ $topic->id }}','{{ addslashes($topic->name) }}','{{ addslashes($topic->description ?: '') }}','{{ $topic->status }}')" data-bs-toggle="tooltip" title="Edit">
+                                                <button class="btn btn-sm btn-light-brand me-1"
+                                                    data-topic="{{ json_encode($topic) }}"
+                                                    onclick="openEditModal(this)"
+                                                    data-bs-toggle="tooltip" title="Edit">
                                                     <i class="feather-edit"></i>
                                                 </button>
-                                                <form action="{{ route('topics.destroy', $topic->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this topic and all its questions?');">
+                                                <form action="{{ route('topics.destroy', $topic->id) }}" method="POST"
+                                                    class="d-inline"
+                                                    onsubmit="return confirm('Delete this topic and all its questions?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-light-brand text-danger" data-bs-toggle="tooltip" title="Delete">
+                                                    <button type="submit" class="btn btn-sm btn-light-brand text-danger"
+                                                        data-bs-toggle="tooltip" title="Delete">
                                                         <i class="feather-trash-2"></i>
                                                     </button>
                                                 </form>
@@ -194,8 +209,10 @@
                             <input type="text" name="name" id="editTopicName" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Description</label>
-                            <textarea name="description" id="editTopicDesc" class="form-control" rows="3"></textarea>
+                            <label class="form-label fw-semibold">Description (Syllabus/Boundary) <span
+                                    class="text-danger">*</span></label>
+                            <textarea name="description" id="editTopicDesc" class="form-control" rows="3"
+                                required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Status</label>
@@ -218,11 +235,12 @@
         const CSRF_TOKEN = '{{ csrf_token() }}';
 
         // ─── Edit Topic Modal ───
-        function openEditModal(id, name, desc, status) {
-            document.getElementById('editForm').action = `/manage-topics/${id}`;
-            document.getElementById('editTopicName').value = name;
-            document.getElementById('editTopicDesc').value = desc;
-            document.getElementById('editTopicStatus').value = status;
+        function openEditModal(btn) {
+            const topic = JSON.parse(btn.getAttribute('data-topic'));
+            document.getElementById('editForm').action = `/manage-topics/${topic.id}`;
+            document.getElementById('editTopicName').value = topic.name;
+            document.getElementById('editTopicDesc').value = topic.description || '';
+            document.getElementById('editTopicStatus').value = topic.status;
             new bootstrap.Modal(document.getElementById('editModal')).show();
         }
 
@@ -233,7 +251,7 @@
             new bootstrap.Modal(document.getElementById('generateModal')).show();
         }
 
-        document.getElementById('btnGenerate').addEventListener('click', async function() {
+        document.getElementById('btnGenerate').addEventListener('click', async function () {
             const topicId = document.getElementById('genTopicId').value;
             const count = document.getElementById('genCount').value;
             const difficulty = document.getElementById('genDifficulty').value;
@@ -257,7 +275,7 @@
                 });
 
                 const data = await response.json();
-                
+
                 if (!response.ok) {
                     throw new Error(data.error || 'Failed to generate questions');
                 }
@@ -275,9 +293,9 @@
         });
 
         // ─── Init ───
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Fix: move modals to body so they aren't clipped by .nxl-content
-            document.querySelectorAll('.modal').forEach(function(modal) {
+            document.querySelectorAll('.modal').forEach(function (modal) {
                 document.body.appendChild(modal);
             });
         });

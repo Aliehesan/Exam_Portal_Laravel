@@ -52,15 +52,12 @@
         <div class="auth-cover-sidebar-inner">
             <div class="auth-cover-card-wrapper">
                 <div class="auth-cover-card p-sm-5">
-                    <div class="mb-5">
-                        <img src="assets/images/MJ logo.jpg" alt="Logo"
-                            style="width: 60px; height: 60px; object-fit: contain;">
+                    <div class="mb-0">
+                        <img src="assets/images/Full Logo.png" alt="Logo"
+                            style="width: 200px; height: 200px; object-fit: contain;">
                     </div>
                     <h2 class="fs-20 fw-bolder mb-4">Register</h2>
-                    <!-- <h4 class="fs-13 fw-bold mb-2">Manage all your Duralux crm</h4>
-                    <p class="fs-12 fw-medium text-muted">Let's get you all setup, so you can verify your personal
-                        account and begine setting up your profile.</p> -->
-                    <form action="" class="w-100 mt-4 pt-2">
+                    <form action="" class="w-100 mt-2 pt-2">
 
                         <div class="mb-4">
                             <input type="text" name="name" class="form-control" placeholder="Full Name" required>

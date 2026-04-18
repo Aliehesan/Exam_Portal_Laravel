@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-left d-flex align-items-center">
             <div class="page-header-title">
-                <h5 class="m-b-10">User Dashboard</h5>
+                <h5 class="m-b-10">Student Dashboard</h5>
             </div>
         </div>
     </div>
@@ -344,7 +344,7 @@
                             </div>
                             <div>
                                 <div class="fs-13 fw-semibold text-muted">Up Next</div>
-                                <div class="fw-bold text-dark" style="font-size:1.1rem">Advanced Algorithms</div>
+                                <div class="fw-bold text-dark" style="font-size:1.1rem">{{ $examTitle }}</div>
                             </div>
                         </div>
 
@@ -353,22 +353,24 @@
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="fs-12 text-muted"><i class="feather-calendar" style="font-size:13px"></i>
                                     Date</span>
-                                <span class="fs-12 fw-semibold text-dark">Today, 2:30 PM</span>
+                                <span class="fs-12 fw-semibold text-dark">
+                                    {{ $examScheduledDate ? \Carbon\Carbon::parse($examScheduledDate)->format('M d, Y - h:i A') : 'Not Scheduled' }}
+                                </span>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="fs-12 text-muted"><i class="feather-layers" style="font-size:13px"></i>
                                     Subject</span>
-                                <span class="badge bg-soft-primary text-primary">CS401</span>
+                                <span class="badge bg-soft-primary text-primary">{{ $examSubject ?? 'General' }}</span>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="fs-12 text-muted"><i class="feather-help-circle" style="font-size:13px"></i>
                                     Questions</span>
-                                <span class="fs-12 fw-semibold text-dark">60 MCQs</span>
+                                <span class="fs-12 fw-semibold text-dark">{{ $questionCount ?? 0 }} MCQs</span>
                             </div>
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="fs-12 text-muted"><i class="feather-clock" style="font-size:13px"></i>
                                     Duration</span>
-                                <span class="fs-12 fw-semibold text-dark">90 Minutes</span>
+                                <span class="fs-12 fw-semibold text-dark">{{ $examDuration ?? 60 }} Minutes</span>
                             </div>
                         </div>
 
@@ -376,12 +378,12 @@
                         <div class="text-center mb-3">
                             <div class="fs-12 text-muted fw-medium mb-1">Starts In</div>
                             <div style="display:flex;justify-content:center;gap:.5rem">
-                                @foreach([['02', 'Hrs'], ['34', 'Min'], ['18', 'Sec']] as [$val, $lbl])
+                                @foreach([['hrs', 'Hrs'], ['min', 'Min'], ['sec', 'Sec']] as [$key, $lbl])
                                     <div
                                         style="background:#1e1b4b;border-radius:10px;padding:.5rem .85rem;min-width:52px;text-align:center">
-                                        <div
+                                        <div id="countdown-{{ $key }}"
                                             style="font-size:1.25rem;font-weight:800;color:#fff;line-height:1;font-family:monospace">
-                                            {{ $val }}</div>
+                                            --</div>
                                         <div
                                             style="font-size:9px;color:#818cf8;font-weight:600;text-transform:uppercase;letter-spacing:.5px">
                                             {{ $lbl }}</div>
@@ -390,7 +392,7 @@
                             </div>
                         </div>
 
-                        <a href="#" class="btn btn-primary w-100 fw-semibold" style="border-radius:10px;font-size:13px">
+                        <a href="{{ url('exampage') }}" class="btn btn-primary w-100 fw-semibold" style="border-radius:10px;font-size:13px">
                             <i class="feather-play-circle me-1"></i> Enter Exam Room
                         </a>
                     </div>
@@ -448,6 +450,46 @@
                 }
             }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const targetDateStr = "{{ $examScheduledDate }}";
+                const hrsEl = document.getElementById('countdown-hrs');
+                const minEl = document.getElementById('countdown-min');
+                const secEl = document.getElementById('countdown-sec');
+
+                if (!targetDateStr) {
+                    if (hrsEl) hrsEl.textContent = '00';
+                    if (minEl) minEl.textContent = '00';
+                    if (secEl) secEl.textContent = '00';
+                    return;
+                }
+
+                const targetDate = new Date(targetDateStr).getTime();
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const distance = targetDate - now;
+
+                    if (distance < 0) {
+                        hrsEl.textContent = '00';
+                        minEl.textContent = '00';
+                        secEl.textContent = '00';
+                        return;
+                    }
+
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    if (hrsEl) hrsEl.textContent = hours.toString().padStart(2, '0');
+                    if (minEl) minEl.textContent = minutes.toString().padStart(2, '0');
+                    if (secEl) secEl.textContent = seconds.toString().padStart(2, '0');
+                }
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            });
+        </script>
     @endpush
     <!-- [ Main Content ] end -->
 @endsection

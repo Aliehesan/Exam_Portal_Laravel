@@ -61,6 +61,12 @@
                         </a>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
+                        <a href="{{ route('exam.control') }}" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-radio"></i></span>
+                            <span class="nxl-mtext">Manage Exams</span>
+                        </a>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
                         <a href="#" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-bar-chart-2"></i></span>
                             <span class="nxl-mtext">Results & Reports</span>

@@ -5,8 +5,20 @@
     <div class="page-header">
         <div class="page-header-left d-flex align-items-center">
             <div class="page-header-title">
-                <h5 class="m-b-10">Manage Questions</h5>
+                <h5 class="m-b-10">
+                    @if(isset($exam_id) && $exam_id)
+                        Assign Questions to <span class="text-primary">{{ collect($exams)->where('id', $exam_id)->first()->title ?? 'Exam' }}</span>
+                    @else
+                        Manage Question Bank
+                    @endif
+                </h5>
             </div>
+            @if(isset($exam_id) && $exam_id)
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url('manage-exams') }}">Manage Exams</a></li>
+                    <li class="breadcrumb-item">Assign Questions</li>
+                </ul>
+            @endif
         </div>
     </div>
     <!-- [ page-header ] end -->
@@ -18,6 +30,9 @@
             <div class="col-12">
                 <div class="card">
                     <form method="GET" action="{{ route('questions.index') }}" class="card-body py-3">
+                        @if(isset($exam_id) && $exam_id)
+                            <input type="hidden" name="exam_id" value="{{ $exam_id }}">
+                        @endif
                         <div class="row align-items-center g-3">
                             <div class="col-md-3">
                                 <label class="form-label fw-semibold mb-1">Filter by Topic</label>
@@ -55,7 +70,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label d-block mb-1">&nbsp;</label>
-                                <a href="{{ route('questions.index') }}" class="btn btn-light-brand w-50">
+                                <a href="{{ route('questions.index') }}{{ isset($exam_id) && $exam_id ? '?exam_id='.$exam_id : '' }}" class="btn btn-light-brand w-50">
                                     <i class="feather-refresh-cw me-1"></i>Reset
                                 </a>
                             </div>
@@ -248,6 +263,8 @@
 
     <script>
         const CSRF_TOKEN = '{{ csrf_token() }}';
+        const EXAM_ID = '{{ $exam_id ?? '' }}';
+        
         let allQuestions = @json($questions->map(function ($q) {
             $q->topicName = $q->topic->name;
             return $q;
@@ -271,7 +288,7 @@
             await fetch(`/manage-questions/${id}/toggle`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
-                body: JSON.stringify({ is_selected: checked })
+                body: JSON.stringify({ is_selected: checked, exam_id: EXAM_ID })
             });
         }
 
@@ -296,7 +313,7 @@
             await fetch(`/manage-questions/bulk-update`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
-                body: JSON.stringify({ ids: filteredIds, status: status })
+                body: JSON.stringify({ ids: filteredIds, status: status, exam_id: EXAM_ID })
             });
         }
 
