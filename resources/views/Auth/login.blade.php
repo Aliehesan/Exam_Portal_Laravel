@@ -58,7 +58,8 @@
                     </div>
                     <h2 class="fs-20 fw-bolder mb-4">Login</h2>
                     <h4 class="fs-13 fw-bold mb-2">Login to your account</h4>
-                    <form action="{{ url('dashboard') }}" class="w-100 mt-2 pt-2">
+                    <form action="{{ url('login') }}" method="POST" class="w-100 mt-2 pt-2">
+                        @csrf
 
                         <div class="mb-4">
                             <input type="email" name="email" class="form-control" placeholder="Email or Username"

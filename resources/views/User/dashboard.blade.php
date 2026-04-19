@@ -53,12 +53,15 @@
                                 </div>
 
                                 <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-                                    <a href="#" style="
+                                    @php
+                                        $practiceExam = \App\Models\Exam::where('status', 'active')->first();
+                                    @endphp
+                                    <a href="{{ $practiceExam ? url('/exampage/' . $practiceExam->id) : url('/viewexam') }}" style="
                               background:#fff;color:#4f46e5;padding:.5rem 1.25rem;
                               border-radius:10px;font-size:13px;font-weight:700;
                               text-decoration:none;transition:opacity .2s
                             ">Start Practice Test</a>
-                                    <a href="#" style="
+                                    <a href="{{ url('/viewresult') }}" style="
                               background:rgba(255,255,255,.12);color:#fff;
                               border:1px solid rgba(255,255,255,.22);padding:.5rem 1.25rem;
                               border-radius:10px;font-size:13px;font-weight:600;
@@ -67,35 +70,52 @@
                                 </div>
                             </div>
 
-                            {{-- Right: subject score bars --}}
+                            {{-- Right: subject score bars (dynamic from DB) --}}
                             <div style="min-width:200px">
                                 <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.4);
                             text-transform:uppercase;letter-spacing:1px;margin-bottom:.85rem">
                                     Subject Performance
                                 </div>
                                 @php
-                                    $subjects = [
-                                        ['CS', 88, '#818cf8'],
-                                        ['MATH', 74, '#fb923c'],
-                                        ['PHY', 66, '#34d399'],
-                                        ['CHEM', 91, '#f472b6'],
-                                        ['ENG', 79, '#60a5fa'],
-                                    ];
-                                  @endphp
-                                @foreach($subjects as [$sub, $score, $color])
-                                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:.5rem">
-                                        <span
-                                            style="font-size:11px;color:rgba(255,255,255,.5);width:34px;font-weight:600">{{ $sub }}</span>
-                                        <div
-                                            style="flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+                                    $userId = \Auth::id();
+                                    $topics = \App\Models\Topic::all();
+                                    $barColors = ['#818cf8', '#fb923c', '#34d399', '#f472b6', '#60a5fa', '#a78bfa', '#fbbf24', '#4ade80'];
+                                    $colorIndex = 0;
+                                    $subjectPerformance = [];
+                                    
+                                    foreach ($topics as $topic) {
+                                        $topicResults = \App\Models\ExamResult::where('user_id', $userId)
+                                            ->whereHas('exam', function($q) use ($topic) {
+                                                $q->where('topic_id', $topic->id);
+                                            })->get();
+                                        
+                                        $avgScore = $topicResults->count() > 0 ? round($topicResults->avg('score')) : 0;
+                                        $subjectPerformance[] = [
+                                            'name' => strtoupper(substr($topic->name, 0, 5)),
+                                            'score' => $avgScore,
+                                            'color' => $barColors[$colorIndex % count($barColors)],
+                                        ];
+                                        $colorIndex++;
+                                    }
+                                @endphp
+                                @if(count($subjectPerformance) > 0)
+                                    @foreach($subjectPerformance as $sp)
+                                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.5rem">
+                                            <span
+                                                style="font-size:11px;color:rgba(255,255,255,.5);width:42px;font-weight:600;text-overflow:ellipsis;overflow:hidden;white-space:nowrap">{{ $sp['name'] }}</span>
                                             <div
-                                                style="height:100%;width:{{ $score }}%;background:{{ $color }};border-radius:4px">
+                                                style="flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+                                                <div
+                                                    style="height:100%;width:{{ $sp['score'] }}%;background:{{ $sp['color'] }};border-radius:4px">
+                                                </div>
                                             </div>
+                                            <span
+                                                style="font-size:11px;color:#fff;font-weight:700;width:28px;text-align:right">{{ $sp['score'] }}</span>
                                         </div>
-                                        <span
-                                            style="font-size:11px;color:#fff;font-weight:700;width:28px;text-align:right">{{ $score }}</span>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <div style="font-size:12px;color:rgba(255,255,255,.4)">No topics yet</div>
+                                @endif
                             </div>
 
                         </div>
@@ -104,8 +124,8 @@
             </div>
             {{-- /HERO --}}
 
-            {{-- ── STAT CARDS ── --}}
-            <div class="col-xxl-3 col-md-6">
+            {{-- ── STAT CARDS (3 cards instead of 4 — removed Class Rank) ── --}}
+            <div class="col-xxl-4 col-md-6">
                 <div class="card stretch stretch-full">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
@@ -114,30 +134,28 @@
                                     <i class="feather-award" style="font-size:20px"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">82</span><span
+                                    <div class="fs-4 fw-bold text-dark"><span class="counter">{{ $avgScore }}</span><span
                                             style="font-size:1rem">/100</span></div>
                                     <h3 class="fs-13 fw-semibold text-truncate-1-line">Avg Score</h3>
                                 </div>
                             </div>
-                            <a href="#"><i class="feather-more-vertical text-muted"></i></a>
                         </div>
                         <div class="pt-4">
                             <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted">Overall Performance</a>
+                                <a href="#" class="fs-12 fw-medium text-muted">Overall Accuracy</a>
                                 <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">Top 15%</span>
-                                    <span class="fs-11 text-muted">(82%)</span>
+                                    <span class="fs-12 text-dark">{{ $avgScore }}%</span>
                                 </div>
                             </div>
                             <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width:82%"></div>
+                                <div class="progress-bar bg-primary" role="progressbar" style="width:{{ $avgScore }}%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xxl-3 col-md-6">
+            <div class="col-xxl-4 col-md-6">
                 <div class="card stretch stretch-full">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
@@ -146,61 +164,29 @@
                                     <i class="feather-check-circle" style="font-size:20px"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">8</span>/<span
-                                            class="counter">10</span></div>
+                                    <div class="fs-4 fw-bold text-dark"><span class="counter">{{ $passedCount }}</span>/<span
+                                            class="counter">{{ $totalAttempted }}</span></div>
                                     <h3 class="fs-13 fw-semibold text-truncate-1-line">Exams Passed</h3>
                                 </div>
                             </div>
-                            <a href="#"><i class="feather-more-vertical text-muted"></i></a>
                         </div>
                         <div class="pt-4">
                             <div class="d-flex align-items-center justify-content-between">
                                 <a href="#" class="fs-12 fw-medium text-muted">Pass Rate</a>
                                 <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">8 Cleared</span>
-                                    <span class="fs-11 text-muted">(80%)</span>
+                                    @php $passRate = $totalAttempted > 0 ? round(($passedCount / $totalAttempted) * 100) : 0; @endphp
+                                    <span class="fs-12 text-dark">{{ $passRate }}%</span>
                                 </div>
                             </div>
                             <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-success" role="progressbar" style="width:80%"></div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width:{{ $passRate }}%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xxl-3 col-md-6">
-                <div class="card stretch stretch-full">
-                    <div class="card-body">
-                        <div class="d-flex align-items-start justify-content-between mb-4">
-                            <div class="d-flex gap-4 align-items-center">
-                                <div class="avatar-text avatar-lg bg-soft-warning" style="color:#d97706">
-                                    <i class="feather-trending-up" style="font-size:20px"></i>
-                                </div>
-                                <div>
-                                    <div class="fs-4 fw-bold text-dark">#<span class="counter">12</span></div>
-                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Class Rank</h3>
-                                </div>
-                            </div>
-                            <a href="#"><i class="feather-more-vertical text-muted"></i></a>
-                        </div>
-                        <div class="pt-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted">Out of 245 students</a>
-                                <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">Top 5%</span>
-                                    <span class="fs-11 text-muted">(↑3)</span>
-                                </div>
-                            </div>
-                            <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width:95%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xxl-3 col-md-6">
+            <div class="col-xxl-4 col-md-6">
                 <div class="card stretch stretch-full">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between mb-4">
@@ -209,23 +195,20 @@
                                     <i class="feather-zap" style="font-size:20px"></i>
                                 </div>
                                 <div>
-                                    <div class="fs-4 fw-bold text-dark"><span class="counter">7</span> <span
-                                            style="font-size:1rem">days</span></div>
-                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Study Streak</h3>
+                                    <div class="fs-4 fw-bold text-dark"><span class="counter">{{ $totalAttempted }}</span></div>
+                                    <h3 class="fs-13 fw-semibold text-truncate-1-line">Total Attempts</h3>
                                 </div>
                             </div>
-                            <a href="#"><i class="feather-more-vertical text-muted"></i></a>
                         </div>
                         <div class="pt-4">
                             <div class="d-flex align-items-center justify-content-between">
-                                <a href="#" class="fs-12 fw-medium text-muted">Keep it going!</a>
+                                <a href="#" class="fs-12 fw-medium text-muted">Exams taken so far</a>
                                 <div class="w-100 text-end">
-                                    <span class="fs-12 text-dark">Personal Best</span>
-                                    <span class="fs-11 text-muted">(12 days)</span>
+                                    <span class="fs-12 text-dark">{{ $totalAttempted }} Total</span>
                                 </div>
                             </div>
                             <div class="progress mt-2 ht-3">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width:58%"></div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width:{{ min($totalAttempted * 10, 100) }}%"></div>
                             </div>
                         </div>
                     </div>
@@ -239,28 +222,7 @@
                     <div class="card-header">
                         <h5 class="card-title">My Recent Results</h5>
                         <div class="card-header-action">
-                            <div class="card-header-btn">
-                                <div data-bs-toggle="tooltip" title="Delete">
-                                    <a href="#" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"></a>
-                                </div>
-                                <div data-bs-toggle="tooltip" title="Refresh">
-                                    <a href="#" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"></a>
-                                </div>
-                                <div data-bs-toggle="tooltip" title="Maximize">
-                                    <a href="#" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"></a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <a href="#" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25,25">
-                                    <i class="feather-more-vertical"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a href="#" class="dropdown-item"><i class="feather-download"></i> Export PDF</a>
-                                    <a href="#" class="dropdown-item"><i class="feather-eye"></i> View All</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item"><i class="feather-settings"></i> Settings</a>
-                                </div>
-                            </div>
+                            <a href="{{ url('viewresult') }}" class="btn btn-xs btn-light">View All</a>
                         </div>
                     </div>
 
@@ -270,7 +232,6 @@
                                 <thead>
                                     <tr class="border-b">
                                         <th>Exam</th>
-                                        <th>Subject</th>
                                         <th>Score</th>
                                         <th>Date</th>
                                         <th>Status</th>
@@ -278,65 +239,45 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- Replace this @foreach with your real $results variable --}}
-                                    @php
-                                        $results = [
-                                            ['Data Structures', 'CS101', 88, '01 Apr 2026', 'Passed', 'success'],
-                                            ['Calculus II', 'MATH201', 72, '29 Mar 2026', 'Passed', 'success'],
-                                            ['Organic Chemistry', 'CHEM301', 95, '27 Mar 2026', 'Passed', 'success'],
-                                            ['Physics Mechanics', 'PHY102', 41, '25 Mar 2026', 'Failed', 'danger'],
-                                            ['English Literature', 'ENG205', 78, '22 Mar 2026', 'Passed', 'success'],
-                                        ];
-                                    @endphp
-                                    @foreach($results as [$exam, $subject, $score, $date, $status, $color])
+                                    @forelse($recentResults as $r)
                                         <tr>
                                             <td>
-                                                <span class="fw-semibold text-dark fs-13">{{ $exam }}</span>
+                                                <span class="fw-semibold text-dark fs-13">{{ $r->exam->title }}</span>
                                             </td>
                                             <td>
-                                                <span class="badge bg-gray-200 text-dark">{{ $subject }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="fw-bold text-dark" style="font-size:14px">{{ $score }}</span>
+                                                <span class="fw-bold text-dark" style="font-size:14px">{{ $r->score }}</span>
                                                 <span class="fs-12 text-muted">/100</span>
-                                                {{-- mini score bar --}}
                                                 <div class="progress mt-1 ht-3" style="width:80px">
-                                                    <div class="progress-bar bg-{{ $color }}" style="width:{{ $score }}%"></div>
+                                                    <div class="progress-bar bg-{{ $r->passed ? 'success' : 'danger' }}" style="width:{{ $r->score }}%"></div>
                                                 </div>
                                             </td>
-                                            <td><span class="fs-12 text-muted">{{ $date }}</span></td>
+                                            <td><span class="fs-12 text-muted">{{ $r->created_at->format('d M Y') }}</span></td>
                                             <td>
-                                                <span class="badge bg-soft-{{ $color }} text-{{ $color }}">{{ $status }}</span>
+                                                <span class="badge bg-soft-{{ $r->passed ? 'success' : 'danger' }} text-{{ $r->passed ? 'success' : 'danger' }}">
+                                                    {{ $r->passed ? 'Passed' : 'Failed' }}
+                                                </span>
                                             </td>
                                             <td class="text-end">
-                                                <a href="#" class="fs-12 fw-semibold text-primary">Review</a>
+                                                <a href="{{ url('/review/' . $r->id) }}" class="fs-12 fw-semibold text-primary">Review</a>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No recent results</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
-                            <li><a href="#"><i class="bi bi-arrow-left"></i></a></li>
-                            <li><a href="#" class="active">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#"><i class="bi bi-dot"></i></a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#"><i class="bi bi-arrow-right"></i></a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
             {{-- /RESULTS TABLE --}}
 
-            {{-- ── NEXT EXAM + QUICK LINKS ── --}}
+            {{-- ── NEXT EXAM CARD (proper alignment) ── --}}
             <div class="col-xxl-4">
-
                 {{-- Next Exam Card --}}
-                <div class="card mb-3" style="border: 2px solid #ede9fe;">
+                <div class="card" style="border: 2px solid #ede9fe;">
                     <div class="card-body">
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="avatar-text avatar-lg bg-soft-primary text-primary">
@@ -397,39 +338,8 @@
                         </a>
                     </div>
                 </div>
-
-                {{-- Quick Actions --}}
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Quick Actions</h5>
-                    </div>
-                    <div class="card-body" style="padding:.75rem 1.25rem">
-                        @php
-                            $actions = [
-                                ['feather-book-open', 'Practice Tests', 'bg-soft-primary text-primary', '#'],
-                                ['feather-bar-chart-2', 'My Analytics', 'bg-soft-success text-success', '#'],
-                                ['feather-calendar', 'Exam Schedule', 'bg-soft-warning text-warning', '#'],
-                                ['feather-download', 'Download Results', 'bg-soft-danger text-danger', '#'],
-                            ];
-                          @endphp
-                        @foreach($actions as [$icon, $label, $cls, $href])
-                            <a href="{{ $href }}" class="d-flex align-items-center gap-3 text-decoration-none" style="
-                                padding:.65rem .5rem;border-radius:10px;transition:background .15s;
-                                border-bottom: 1px solid #f3f4f6;
-                                {{ $loop->last ? 'border-bottom:none' : '' }}
-                              " onmouseover="this.style.background='#f9f7ff'" onmouseout="this.style.background='transparent'">
-                                <div class="avatar-text avatar-sm {{ $cls }}" style="border-radius:10px">
-                                    <i class="{{ $icon }}" style="font-size:14px"></i>
-                                </div>
-                                <span class="fs-13 fw-semibold text-dark">{{ $label }}</span>
-                                <i class="feather-chevron-right text-muted ms-auto" style="font-size:14px"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-
             </div>
-            {{-- /NEXT EXAM + QUICK LINKS --}}
+            {{-- /NEXT EXAM --}}
 
         </div>{{-- /row --}}
     </div>{{-- /main-content --}}

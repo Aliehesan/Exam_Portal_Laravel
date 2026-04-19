@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('exam_results', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable(); // Since there is no auth
+            $table->unsignedBigInteger('exam_id');
+            $table->integer('total_questions');
+            $table->integer('correct_answers');
+            $table->integer('score');
+            $table->boolean('passed');
             $table->timestamps();
+
+            $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
         });
     }
 

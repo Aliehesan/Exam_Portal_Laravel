@@ -12,13 +12,13 @@
     <meta name="author" content="flexilecode" />
     <title>Maktabah Jafariyah Online Exam</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/MJ logo.jpg" />
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/MJ logo.jpg') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}" />
 
-    <link rel="stylesheet" type="text/css" href="assets/vendors/css/vendors.min.css" />
-    <link rel="stylesheet" type="text/css" href="assets/vendors/css/daterangepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/css/vendors.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/css/daterangepicker.min.css') }}" />
 
-    <link rel="stylesheet" type="text/css" href="assets/css/theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/theme.min.css') }}" />
 </head>
 
 <body>
@@ -27,8 +27,10 @@
             <div class="m-header">
                 <a href="#" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
-                    <img src="assets/images/Full logo.png" alt="" class="logo logo-lg" height="50px" width="200px" />
-                    <img src="assets/images/MJ logo.jpg" alt="" class="logo logo-sm" height="40px" width="50px" />
+                    <img src="{{ asset('assets/images/Full logo.png') }}" alt="" class="logo logo-lg" height="50px"
+                        width="200px" />
+                    <img src="{{ asset('assets/images/MJ logo.jpg') }}" alt="" class="logo logo-sm" height="40px"
+                        width="50px" />
                 </a>
             </div>
             <div class="navbar-content">
@@ -54,31 +56,6 @@
                             <span class="nxl-mtext">Result</span>
                         </a>
                     </li>
-                    <!-- <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-users"></i></span>
-                            <span class="nxl-mtext">Manage Students</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-bar-chart-2"></i></span>
-                            <span class="nxl-mtext">Results & Reports</span>
-                        </a>
-                    </li> -->
-                    <!-- <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-users"></i></span>
-                            <span class="nxl-mtext">Customers</span><span class="nxl-arrow"><i
-                                    class="feather-chevron-right"></i></span>
-                        </a>
-                        <ul class="nxl-submenu">
-                            <li class="nxl-item"><a class="nxl-link" href="customers.html">Customers</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="customers-view.html">Customers View</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="customers-create.html">Customers Create</a>
-                            </li>
-                        </ul>
-                    </li> -->
                     <li class="nxl-item nxl-hasmenu">
                         <a href="#" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-settings"></i></span>
@@ -86,110 +63,22 @@
                                     class="feather-chevron-right"></i></span>
                         </a>
                         <ul class="nxl-submenu">
-                            <li class="nxl-item"><a class="nxl-link" href="settings-general.html">Change Password</a>
+                            <li class="nxl-item"><a class="nxl-link" href="{{ url('change-password') }}">Change
+                                    Password</a>
                             </li>
-                            <li class="nxl-item"><a class="nxl-link" href="settings-seo.html">Exam Timer</a>
-                            </li>
-                            <!-- <li class="nxl-item"><a class="nxl-link" href="settings-tags.html">Tags</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="settings-email.html">Email</a></li> -->
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
-                        <a href="{{ url('login') }}" class="nxl-link">
+                        <a href="javascript:void(0);"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                            class="nxl-link">
                             <span class="nxl-micon"><i class="feather-log-out"></i></span>
                             <span class="nxl-mtext">Logout</span>
                         </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </li>
-                    <!-- <li class="nxl-item nxl-hasmenu">
-                        <a href="#" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-power"></i></span>
-                            <span class="nxl-mtext">Authentication</span><span class="nxl-arrow"><i
-                                    class="feather-chevron-right"></i></span>
-                        </a>
-                        <ul class="nxl-submenu">
-                            <li class="nxl-item nxl-hasmenu">
-                                <a href="#" class="nxl-link">
-                                    <span class="nxl-mtext">Login</span><span class="nxl-arrow"><i
-                                            class="feather-chevron-right"></i></span>
-                                </a>
-                                <ul class="nxl-submenu">
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-login-cover.html">Cover</a></li>
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-login-minimal.html">Minimal</a>
-                                    </li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-login-creative.html">Creative</a></li>
-                                </ul>
-                            </li>
-                            <li class="nxl-item nxl-hasmenu">
-                                <a href="#" class="nxl-link">
-                                    <span class="nxl-mtext">Register</span><span class="nxl-arrow"><i
-                                            class="feather-chevron-right"></i></span>
-                                </a>
-                                <ul class="nxl-submenu">
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-register-cover.html">Cover</a>
-                                    </li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-register-minimal.html">Minimal</a></li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-register-creative.html">Creative</a></li>
-                                </ul>
-                            </li>
-                            <li class="nxl-item nxl-hasmenu">
-                                <a href="#" class="nxl-link">
-                                    <span class="nxl-mtext">Error-404</span><span class="nxl-arrow"><i
-                                            class="feather-chevron-right"></i></span>
-                                </a>
-                                <ul class="nxl-submenu">
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-404-cover.html">Cover</a></li>
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-404-minimal.html">Minimal</a>
-                                    </li>
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-404-creative.html">Creative</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nxl-item nxl-hasmenu">
-                                <a href="#" class="nxl-link">
-                                    <span class="nxl-mtext">Reset Pass</span><span class="nxl-arrow"><i
-                                            class="feather-chevron-right"></i></span>
-                                </a>
-                                <ul class="nxl-submenu">
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-reset-cover.html">Cover</a></li>
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-reset-minimal.html">Minimal</a>
-                                    </li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-reset-creative.html">Creative</a></li>
-                                </ul>
-                            </li>
-                            <li class="nxl-item nxl-hasmenu">
-                                <a href="#" class="nxl-link">
-                                    <span class="nxl-mtext">Verify OTP</span><span class="nxl-arrow"><i
-                                            class="feather-chevron-right"></i></span>
-                                </a>
-                                <ul class="nxl-submenu">
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-verify-cover.html">Cover</a>
-                                    </li>
-                                    <li class="nxl-item"><a class="nxl-link" href="auth-verify-minimal.html">Minimal</a>
-                                    </li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-verify-creative.html">Creative</a></li>
-                                </ul>
-                            </li>
-                            <li class="nxl-item nxl-hasmenu">
-                                <a href="#" class="nxl-link">
-                                    <span class="nxl-mtext">Maintenance</span><span class="nxl-arrow"><i
-                                            class="feather-chevron-right"></i></span>
-                                </a>
-                                <ul class="nxl-submenu">
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-maintenance-cover.html">Cover</a></li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-maintenance-minimal.html">Minimal</a></li>
-                                    <li class="nxl-item"><a class="nxl-link"
-                                            href="auth-maintenance-creative.html">Creative</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li> -->
                 </ul>
             </div>
         </div>
@@ -259,26 +148,19 @@
                             <div class="dropdown-divider mt-0"></div>
                         </div>
                     </div>
-                    <!-- <div class="nxl-h-item dark-light-theme">
-                        <a href="#" class="nxl-head-link me-0 dark-button">
-                            <i class="feather-moon"></i>
-                        </a>
-                        <a href="#" class="nxl-head-link me-0 light-button" style="display: none">
-                            <i class="feather-sun"></i>
-                        </a>
-                    </div> -->
                     <div class="dropdown nxl-h-item">
                         <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
-                            <img src="assets/images/avatar/1.png" alt="user-image" class="img-fluid user-avtar me-0" />
+                            <img src="{{ asset('assets/images/avatar/1.png') }}" alt="user-image"
+                                class="img-fluid user-avtar me-0" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                             <div class="dropdown-header">
                                 <div class="d-flex align-items-center">
-                                    <img src="assets/images/avatar/1.png" alt="user-image"
+                                    <img src="{{ asset('assets/images/avatar/1.png') }}" alt="user-image"
                                         class="img-fluid user-avtar" />
                                     <div>
-                                        <h6 class="text-dark mb-0">Alexandra Della</h6>
-                                        <span class="fs-12 fw-medium text-muted">alex@example.com</span>
+                                        <h6 class="text-dark mb-0">{{ auth()->user()->name }}</h6>
+                                        <span class="fs-12 fw-medium text-muted">{{ auth()->user()->email }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -318,9 +200,6 @@
                     document.write(new Date().getFullYear());
                 </script>
             </p>
-            <p><span>By: <a target="_blank" href="https://wrapbootstrap.com/user/theme_ocean"
-                        target="_blank">theme_ocean</a></span> • <span>Distributed by: <a target="_blank"
-                        href="https://themewagon.com/" target="_blank">ThemeWagon</a></span></p>
             <div class="d-flex align-items-center gap-4">
                 <a href="#" class="fs-11 fw-semibold text-uppercase">Help</a>
                 <a href="#" class="fs-11 fw-semibold text-uppercase">Terms</a>
@@ -330,19 +209,13 @@
         <!-- [ Footer ] end -->
     </main>
     <!--! BEGIN: Vendors JS !-->
-    <script src="assets/vendors/js/vendors.min.js"></script>
+    <script src="{{ asset('assets/vendors/js/vendors.min.js') }}"></script>
     <!-- vendors.min.js {always must need to be top} -->
-    <script src="assets/vendors/js/daterangepicker.min.js"></script>
-    <script src="assets/vendors/js/apexcharts.min.js"></script>
-    <script src="assets/vendors/js/circle-progress.min.js"></script>
-    <!--! END: Vendors JS !-->
-    <!--! BEGIN: Apps Init  !-->
-    <script src="assets/js/common-init.min.js"></script>
-    <script src="assets/js/dashboard-init.min.js"></script>
-    <!--! END: Apps Init !-->
-    <!--! BEGIN: Theme Customizer  !-->
-    <script src="assets/js/theme-customizer-init.min.js"></script>
+    <script src="{{ asset('assets/vendors/js/daterangepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/common-init.min.js') }}"></script>
+    <script src="{{ asset('assets/js/theme-customizer-init.min.js') }}"></script>
     <!--! END: Theme Customizer !-->
+    @stack('scripts')
 </body>
 
 </html>
